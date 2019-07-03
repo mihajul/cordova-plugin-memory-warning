@@ -1,16 +1,16 @@
 module.exports = function(context) {
 	const fs = require('fs')
 	const path = require('path')
-	const Q = context.requireCordovaModule('q')
+	const Q = require('q');
 	const deferral = new Q.defer()
 	const config_xml = path.join(context.opts.projectRoot, 'config.xml')
-	const et = context.requireCordovaModule('elementtree')
+	const et = require('elementtree');
 
 	const data = fs.readFileSync(config_xml).toString()
 	const etree = et.parse(data)
 	const packageName = etree.getroot().attrib.id
 	const packagePath = packageName.replace(/\./g, "/")
-	const target = path.join('platforms/android/src/', packagePath, 'MainActivity.java')
+	const target = path.join('platforms/android/app/src/main/java', packagePath, 'MainActivity.java')
 	console.log('CordovaPluginMemoryWarning -> attempting to modify ' + target)
 
 	// read the current MainActivity.java
